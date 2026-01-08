@@ -1,0 +1,47 @@
+handleing store number:
+
+one hot encoding: binary classification of if it is that store or not : weights would get assigned to each store column, and as it gets 1 we use it: will help in providing a base value for the sales of the store and the rest parameters would increase or decrease the sales 
+
+target/mean encoding: would assign average value of sales of that store (from training data), so would give the "base value" (which i assume would be calculated by weights in one hot encoding) 
+
+embedding encoding: learn a dense vector like [0.21, -0.03, 0.88] which would describe some stuff about the store 
+
+
+final verdict: 
+embeddings look cool, and would be more of use when we have more stores, but since there are only 45 stores in the data, embeddings would overfit
+
+one hot encoding will create a lot of mess by making 45 extra sparse columns 
+
+target/mean encoding would be a sweet spot, we would make sure to do:
+out of fold encoding
+combine lag features
+i am thinking of using are last week's sales and average of last 4 week's sales so what i plan is creating the lag features of sales then doing the train test split, and then after the split i will get store mean values (calculated from only training data, and using the same training means in testing)
+
+for train test split i would use rolling validation, something like this: 
+Train: 2010–2011  → Test: early 2012
+Train: 2010–2012  → Test: mid 2012
+Train: 2010–mid12 → Test: late 2012
+
+
+
+
+
+handeling DATE and holiday flag: (adding feature) will do it before train test split beacuse no leakeage would occur
+year
+season four seasons are there in USA (spring, summer, fall, winter)
+week of year 
+is year end
+time_idx (weeks since start of data)
+weeks to next holiday
+weeks since last holiday
+
+
+
+
+
+
+handeling temprature (seasonal mean and SD of the temprature)
+temp_zscore (temprature - mean) / SD
+abnormally_hot (if temp_zscore > 1) (or 2 )
+abnormally_cold (if temp_zscore < -1) (or -2)
+
