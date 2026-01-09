@@ -34,7 +34,7 @@ is year end
 time_idx (weeks since start of data)
 weeks to next holiday
 weeks since last holiday
-
+unemployment*holiday_flag
 
 
 
@@ -45,3 +45,17 @@ temp_zscore (temprature - mean) / SD
 abnormally_hot (if temp_zscore > 1) (or 2 )
 abnormally_cold (if temp_zscore < -1) (or -2)
 
+
+fuel price:
+sudden change in fuel price 
+we can make something like is fuel price is high during the end of month 
+fuel price * unemployment
+
+CPI: 
+rolling CPI trend over 4 weeks (trend_4w = cpi.diff(1).rolling(4).mean())
+cpi * unemployment
+CPI*time_idx
+
+unemployment:
+due to SNAP (supplemental nutrition assistance program) money in EBT cards,  people buy more essential items from wallmart, so sales might increase, but it is the daily need wale items so sales might not increase that much as the high value items(electronics, etc) sales drop 
+new features are mentioned above
