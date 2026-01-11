@@ -25,11 +25,11 @@ The model achieved outstanding results across my validation folds:
 
 | Metric | Fold 1 (Feb 2012) | Fold 2 (Jun 2012) | **Average** |
 | :--- | :--- | :--- | :--- |
-| **R² Score** | 0.9830 | 0.9846 | **0.9838** |
-| **MAE** | $46,423 | $46,816 | **~$46,620** |
-| **RMSE** | $70,590 | $66,268 | **~$68,429** |
+| **R² Score** | 0.9824 | 0.9854 | **0.9839** |
+| **RMSE** | ~71,877 | ~64,394 | **~68,136** |
+| **MAPE** | 4.79% | 4.45% | **4.62%** |
 
-**Interpretation:** An R² of **0.98** indicates that my model explains **98% of the variance** in weekly sales. This is a very high score, suggesting that the lag features and target encoding successfully captured the sales patterns.
+**Interpretation:** An R² of **0.98** indicates that my model explains **98% of the variance** in weekly sales. The MAPE of **~4.6%** means that on average, my predictions are within 5% of the actual sales figures, which is highly accurate for retail forecasting.
 
 ---
 
@@ -37,7 +37,7 @@ The model achieved outstanding results across my validation folds:
 
 I generated several plots to understand *why* the model works so well.
 
-### A. Basic Model Diagnostics (in `plots/basic/`)
+### A. Basic Model Diagnostics (in `plots/`)
 
 1.  **Actual vs. Predicted Sales**:
     *   The points cluster very tightly around the diagonal red line (perfect fit).
@@ -52,7 +52,7 @@ I generated several plots to understand *why* the model works so well.
     *   The distribution of errors is roughly normal (bell-shaped) and centered around zero.
     *   This validates that the model is unbiased; it doesn't systematically over-predict or under-predict.
 
-### B. SHAP Explainability (in `plots/SHAP/`)
+### B. SHAP Explainability (in `plots/`)
 
 To ensure the model isn't a "black box," I used SHAP (SHapley Additive exPlanations).
 
@@ -76,4 +76,4 @@ My **XGBoost model** combined with **Target Encoding** and **Lag Features** crea
 
 *   **Key Driver:** Historical sales momentum (Lags) and Store baseline (Target Encoding) are the most powerful predictors.
 *   **External Factors:** While Economic features (Fuel, CPI, Unemployment) were engineered, they play a secondary role compared to the strong seasonality and store-specific trends.
-*   **Reliability:** The consistent R² > 0.98 across different time splits proves the model is robust and ready for deployment.
+*   **Reliability:** The consistent R² > 0.98 and MAPE < 5% across different time splits proves the model is robust and ready for deployment.

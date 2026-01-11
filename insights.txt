@@ -1,3 +1,5 @@
+Rough file to dump the stuff i learned while working on walmart sales prediction
+
 unemployement grants food voucheras which are used in wallmarts 
 store number is important: big store != small store and rich area != small area
 date: year end, festival season 
@@ -73,3 +75,6 @@ CPI*time_idx
 unemployment:
 due to SNAP (supplemental nutrition assistance program) money in EBT cards,  people buy more essential items from wallmart, so sales might increase, but it is the daily need wale items so sales might not increase that much as the high value items(electronics, etc) sales drop 
 new features are mentioned above
+
+
+while predicting using log transformed weekly sales, which would help us capture the store wise relative changes in sales

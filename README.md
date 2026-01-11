@@ -61,12 +61,12 @@ Machine learning models can be like black boxes—data goes in, answers come out
 
 Imagine 3 friends pay \$20 for a shared pizza. SHAP calculates exactly how much each person should pay based on how many slices they actually ate.
 
-In my model: (from the waterfall plot at )
+In my model: (from the waterfall plot at `..plots/basic/waterfall`) (1e5)
 
-* **Base Value:** The average sales across all stores (e.g., \$1047400.938).
+* **Base Value:** The average sales across all stores (e.g., \$13.7).
 * **Feature Contribution:**
-  * If `Weeks_To_Next_Holiday = 1`, SHAP  says: "Add +$20622.59" (Shopping rush!).
-  * If  `is_month_end_and_High_Fuel_Price `, SHAP says: "Subtract -$18234.55" (People have no money and they are driving less).
+  * If `Weeks_To_Next_Holiday = 1`, SHAP  says: "Add ~+$0.01M" (Shopping rush!).
+  * If  `is_month_end_and_High_Fuel_Price `, SHAP says: "Subtract ~-$0.01M" (People have no money and they are driving less).
 
 It helps me trust the model because I can verify that it's using logic that makes sense (e.g., sales go up in December), rather than memorizing random noise.
 
@@ -79,11 +79,12 @@ I didn't just throw raw data at the model. I engineered "smart" features based o
 * **Holiday Distance:** Instead of just a "Is it a holiday?" Yes/No flag, I calculated **"How many weeks until the next holiday?"**. People shop for gifts *before* Christmas, not just on Christmas day.
 * **Target Encoding:** I replaced the `Store ID` (which is just a random number like 1, 2, 3) with the **Average Sales** of that store. This gives the model a strong baseline immediately.
 * **Lag Features:** I fed the model the sales from **Last Week**. If sales were high last week, they usually stay high. This captures momentum.
+* **Handeliing scale differences across stores :** I trained the model on `log transformsed weekly sales`, effectively optimising relative error while retaing squared error staibility
 
 *For a full breakdown of these strategies, read `experiments.md`.*
 
 ## Results
 
-The model performed exceptionally well, achieving an **R² score of ~0.98**. This means it successfully captured 98% of the patterns in the sales data.
+The model performed exceptionally ell, achieving an **R² score of ~0.98**. and **MAPE 4.45%** This means it successfully predicted weekly sales with mean average 4.45% error (relative to the store's actual sales)
 
 *For detailed performance metrics and plot interpretations, read `conclusion.md`.*

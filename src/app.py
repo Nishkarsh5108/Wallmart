@@ -7,7 +7,7 @@ import xgboost as xgb
 import shap
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error, mean_absolute_percentage_error
 import datetime
 
 # Page Config
@@ -187,10 +187,11 @@ if len(preds_full) == len(y_test):
     r2 = r2_score(y_true, preds_full)
     mae = mean_absolute_error(y_true, preds_full)
     rmse = np.sqrt(mean_squared_error(y_true, preds_full))
-    
+    mape = mean_absolute_percentage_error(y_true, preds_full)
+
     m1, m2, m3 = st.columns(3)
     m1.metric("R² Score", f"{r2:.4f}")
-    m2.metric("MAE", f"${mae:,.0f}")
+    m2.metric("MAPE", f"{mape:.4%}")
     m3.metric("RMSE", f"${rmse:,.0f}")
     
     st.markdown("#### Actual vs Predicted")
