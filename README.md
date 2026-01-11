@@ -7,33 +7,50 @@ Predicting how much a store will sell next week is super important so they don't
 I took a dataset containing historical sales, dates, holiday info, temperature, fuel prices, and economic indicators (CPI, Unemployment) to teach a computer model how to guess future sales.
 
 * **`src/main.ipynb`**: The main code where the feature engineering and model training happens.
+* **`src/app.py`**: An interactive Streamlit web application to demo the model predictions live.
 * **`experiments.md`**: A diary of the features I tried and strategies I used. Read this to understand *why* I manipulated the data the way I did.
 * **`conclusion.md`**: The final report card. It breaks down the scores and interprets the graphs.
+* **`insights.txt`**: Rough notes and learnings gathered during the project lifecycle.
 
 ---
 
 ## How to Run It
 
-1. **Install dependencies:**
-   You will need Python and these libraries. Run this in your terminal:
+### 1. Install Dependencies
 
-   ```bash
-   pip install pandas numpy xgboost scikit-learn matplotlib seaborn shap
-   ```
-2. **Run the notebook:**
-   Open `src/main.ipynb` in your favorite editor (VS Code, JupyterLab) and run all cells.
-3. **Expected Output:**
+You will need Python and the required libraries. Run this in your terminal:
 
-   * The code processes the data (cleaning dates, calculating time lags).
-   * It trains an **XGBoost** model using a sliding window strategy (simulating real time passing).
-   * It prints the **R² Score** (accuracy) and **RMSE** (average error in dollars).
-   * It generates plots in the `plots/` directory showing which features matter most.
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run the Interactive App (Demo)
+
+To see the model in action with a user-friendly interface:
+
+```bash
+streamlit run src/app.py
+```
+
+This will open a local website where you can select stores, dates, and see predictions + SHAP explanations in real-time.
+
+### 3. Run the Research Notebook
+
+If you want to see the training process, analysis, and plot generation:
+Open `src/main.ipynb` in your favorite editor (VS Code, JupyterLab) and run all cells.
+
+**Expected Output from Notebook:**
+
+* Processes the data (cleaning dates, calculating time lags).
+* Trains an **XGBoost** model using a sliding window strategy.
+* Prints **R² Score** and **RMSE**.
+* Generates plots in the `plots/` directory.
 
 ---
 
-## The "Brain" of the Project 🧠
+## The "Brain" of the Project 
 
-I used two advanced concepts to make this work. Here is the simple explanation:
+I used two advanced concepts to make this work. Here is the simple explanation:(nerdy stuff, ik you gonna skip)
 
 ### 1. XGBoost (The Prediction Engine)
 
