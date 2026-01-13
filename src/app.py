@@ -124,7 +124,7 @@ if not row.empty:
     model_features = X_test.columns.drop(['Store', 'Date', 'Store_Target_Mean_Rounded'])
     
     # Predict
-    prediction = model.predict(features_for_model[model_features])[0]
+    prediction = np.exp(model.predict(features_for_model[model_features])[0]) #taking anti-log cause we log-transformed the values for that store sales are on scale for each store
     
     st.subheader("Prediction Result")
     metric_col1, metric_col2 = st.columns(2)
