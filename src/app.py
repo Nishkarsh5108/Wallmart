@@ -146,6 +146,16 @@ if not row.empty:
             explainer = shap.TreeExplainer(model)
             shap_values = explainer(features_for_model[model_features])
             
+            # Transform SHAP values from log-scale to original scale (dollars) to maintain additivity in the plot
+            log_base = shap_values.base_values[0]
+            log_values = shap_values.values[0]
+            actual_base = np.exp(log_base)
+            actual_pred = np.exp(log_base + log_values.sum())
+            
+            # Distribute the total difference in original scale proportionally to log-scale contributions
+            if abs(log_values.sum()) > 1e-6:
+                shap_values.values[0] = log_values * (actual_pred - actual_base) / log_values.sum()
+            
             # Waterfall Plot
             fig, ax = plt.subplots(figsize=(10, 6))
             shap.plots.waterfall(shap_values[0], show=False, max_display=10)
@@ -164,9 +174,7 @@ if not row.empty:
             # st.markdown(f"####Insight:")
             # st.write(f"Sales are predicted to **{impact}** significantly because **'{top_feature}'** has a value of **{features_for_model[top_feature].values[0]:.2f}** (Impact: ${top_contribution:,.0f}).")
 
-else:
-    st.warning("No data found for this Store and Week in the test set. Please select another date.")
-
+    
 # --- SECTION C: Performance Dashboard ---
 st.markdown("---")
 st.header("Performance Dashboard")
@@ -174,7 +182,7 @@ st.header("Performance Dashboard")
 # Calculate metrics on the fly for the test set
 # Calculate metrics on the fly for the test set
 model_features_full = X_test.columns.drop(['Store', 'Date', 'Store_Target_Mean_Rounded'])
-preds_full = model.predict(X_test[model_features_full])
+preds_full = np.exp(model.predict(X_test[model_features_full]))
 # Note: XGBoost model from pickle might not have .features_names attribute accessible this way easily depending on version, 
 # but we know columns match X_test minus helpers.
 # Actually, if I trained with sklearn API, it preserves feature names. 
@@ -213,8 +221,9 @@ st.markdown("""
 This application uses **XGBoost (Extreme Gradient Boosting)**, a state-of-the-art machine learning algorithm known for its performance on structured data.
 
 ### Secret Sauce
-1.  **Target Encoding**: We encode the `Store` categorical variable using `Store_Target_Mean` (mean sales per store) to capture store-level performance baselines.
-2.  **Lag Features**: We use past performance (e.g., `Lag_Sales_1w`, `Rolling_Mean_Sales_4w`) as powerful predictors for future sales. This allows the model to "remember" recent trends.
+1.  **Target Encoding**: I encode the `Store` categorical variable using `Store_Target_Mean` (mean sales per store) to capture store-level performance baselines.
+2.  **Lag Features**: I use past performance (e.g., `Lag_Sales_1w`, `Rolling_Mean_Sales_4w`) as powerful predictors for future sales. This allows the model to "remember" recent trends.
 3.  **Holiday Handling**: Custom features like `Weeks_To_Next_Holiday` allow the model to anticipate sales spikes before major events.
+4. **Handeliing scale differences across stores :** I trained the model on `log transformsed weekly sales`, effectively optimising relative error while retaing squared error staibility
 """)
 
